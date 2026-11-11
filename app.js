@@ -199,6 +199,9 @@ function renderPlaylists() {
         ${pl.type === 'drive'
           ? `<button data-act="sync" ${status ? 'disabled' : ''}>同步</button>`
           : '<button data-act="addfiles">加入檔案</button>'}
+        ${pl.type === 'drive' && cached
+          ? `<button data-act="clear" ${status ? 'disabled' : ''}>清除下載</button>`
+          : ''}
         <button data-act="tracks">${open ? '收起' : '曲目'}</button>
         <button class="ghost danger" data-act="delete" ${status ? 'disabled' : ''}>刪除</button>
       </div>
@@ -236,10 +239,26 @@ $('#playlists').addEventListener('click', e => {
   } else if (act === 'tracks') {
     openTracks.has(pl.id) ? openTracks.delete(pl.id) : openTracks.add(pl.id);
     renderPlaylists();
+  } else if (act === 'clear') {
+    clearDownloads(pl);
   } else if (act === 'delete') {
     deletePlaylist(pl);
   }
 });
+
+// 刪掉這個清單下載到手機的歌，但保留清單和曲目；之後按「同步」可重新下載
+async function clearDownloads(pl) {
+  const cached = pl.tracks.filter(t => t.cached);
+  const size = cached.reduce((s, t) => s + (t.size || 0), 0);
+  if (!confirm(`清除「${pl.name}」已下載的 ${cached.length} 首歌（約 ${fmtSize(size)}）？\n播放清單會保留，之後按「同步」可以重新下載。`)) return;
+  if (player.playlist?.id === pl.id) player.stop();
+  await purgeAudio(cached.map(t => t.id), pl.id);
+  pl.tracks.forEach(t => { t.cached = false; });
+  await savePlaylist(pl);
+  renderPlaylists();
+  updateStorage();
+  toast(`已清除「${pl.name}」的下載`);
+}
 
 async function deletePlaylist(pl) {
   if (!confirm(`刪除播放清單「${pl.name}」？\n手機上下載的音樂檔也會一併刪除（雲端硬碟上的檔案不受影響）。`)) return;
@@ -457,8 +476,13 @@ $('#btnChoose').addEventListener('click', async () => {
 });
 
 // ---------- 儲存空間 ----------
+const helpDlg = $('#helpDlg');
+$('#btnHelp').addEventListener('click', () => helpDlg.showModal());
+$('#helpClose').addEventListener('click', () => helpDlg.close());
+helpDlg.addEventListener('click', e => { if (e.target === helpDlg) helpDlg.close(); }); // 點背景關閉
+
 async function updateStorage() {
-  const el = $('#storage');
+  const el = $('#storageText');
   try {
     const est = await navigator.storage?.estimate?.();
     const persisted = await navigator.storage?.persisted?.();

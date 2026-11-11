@@ -98,6 +98,12 @@ svg .fill { fill: currentColor; stroke: none; }
 .add-row button { flex: 1; min-width: 150px; }
 
 .storage { margin-top: 26px; font-size: 13px; color: var(--muted); text-align: center; }
+.storage button { margin-top: 6px; font-size: 13px; color: var(--muted); padding: 4px 10px; }
+.help-body { overflow: auto; padding: 4px 16px 16px; font-size: 15px; }
+.help-body h3 { font-size: 15px; margin: 14px 0 4px; color: var(--accent); }
+.help-body p { margin: 0 0 6px; }
+.help-body code { background: var(--card2); border-radius: 4px; padding: 0 4px; font-size: 13px; }
+.help-body .muted { font-size: 13px; margin-top: 14px; }
 
 .overlay {
   position: fixed; inset: 0; background: rgba(8, 10, 12, .88); display: grid; place-items: center; z-index: 20;

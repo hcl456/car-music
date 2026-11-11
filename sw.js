@@ -1,6 +1,6 @@
 // Service Worker：快取網頁本身，讓車上沒網路時也能打開
 // 音樂檔不經過這裡（存在 IndexedDB）
-const CACHE = 'car-music-v1';
+const CACHE = 'car-music-v2';
 const ASSETS = [
   './', './index.html', './style.css', './app.js', './player.js', './db.js', './drive.js', './auth.js', './config.js',
   './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',

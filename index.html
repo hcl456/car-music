@@ -56,7 +56,10 @@
       </div>
     </section>
 
-    <footer id="storage" class="storage"></footer>
+    <footer class="storage">
+      <div id="storageText"></div>
+      <button id="btnHelp" class="ghost small">如何清除空間？</button>
+    </footer>
   </main>
 
   <div id="overlay" class="overlay" hidden>
@@ -79,6 +82,28 @@
     <div class="dlg-foot">
       <span id="folderInfo" class="muted"></span>
       <button id="btnChoose" class="primary">使用這個資料夾</button>
+    </div>
+  </dialog>
+
+  <dialog id="helpDlg" class="dlg help">
+    <div class="dlg-head">
+      <strong>如何清除空間</strong>
+      <button id="helpClose" class="ghost small">關閉</button>
+    </div>
+    <div class="help-body">
+      <h3>1. 清除下載（保留清單）</h3>
+      <p>在 Drive 清單上按「清除下載」，會刪掉下載到手機的歌，但保留清單和曲目。之後想聽，按「同步」重新下載就好。</p>
+
+      <h3>2. 刪除播放清單</h3>
+      <p>按清單的「刪除」，清單和下載到手機的歌會一起刪掉。雲端硬碟上的檔案不受影響。</p>
+
+      <h3>3. 只刪部分歌曲</h3>
+      <p>把不要的歌從 Google Drive 資料夾移走，再按「同步」，手機上對應的檔案就會被刪掉。</p>
+
+      <h3>4. 全部清空</h3>
+      <p>iPhone「設定」→「Safari」→「進階」→「網站資料」，找到 <code>hcl456.github.io</code> 刪除。這會清掉所有播放清單、下載的歌和登入狀態，等於第一次打開。</p>
+
+      <p class="muted">兩個清單共用同一首歌時，刪除其中一個清單不會影響另一個清單的那首歌。<br>「手機 / iCloud 檔案」清單的歌只存在這裡，刪除後要重新從「檔案」App 加入。</p>
     </div>
   </dialog>
 
